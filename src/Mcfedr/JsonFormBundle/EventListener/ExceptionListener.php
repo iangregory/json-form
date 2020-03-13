@@ -7,6 +7,7 @@ namespace Mcfedr\JsonFormBundle\EventListener;
 use Mcfedr\JsonFormBundle\Exception\JsonHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use InvalidArgumentException;
 
 class ExceptionListener
 {
