@@ -10,9 +10,15 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class ExceptionListener
 {
-    public function onKernelException(GetResponseForExceptionEvent $event): void
+    public function onKernelException($event): void
     {
-        $exception = $event->getException();
+        if ($event instanceof ExceptionEvent && method_exists($event, 'getThrowable')) {
+            $exception = $event->getThrowable();
+        } elseif ($event instanceof GetResponseForExceptionEvent) {
+            $exception = $event->getException();
+        } else {
+            throw new InvalidArgumentException('onKernelException function only accepts GetResponseForExceptionEvent and ExceptionEvent arguments');
+        }
 
         if ($exception instanceof JsonHttpException) {
             $errorData = [
